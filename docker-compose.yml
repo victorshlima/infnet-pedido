@@ -1,0 +1,26 @@
+version: "2.4"
+services:
+  infnet-mysql-pedido-main-1:
+    image: mysql:8.0.28
+    container_name: infnet-mysql-pedido-main-1
+    volumes:
+      - ./src/main/resources/script-ddl.sql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - backend
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "root"
+      TZ: "America/Sao_Paulo"
+    healthcheck:
+      test: mysql --user=$$MYSQL_USER --password=$$MYSQL_ROOT_PASSWORD -e 'SHOW DATABASES;'
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+networks:
+  backend:
